@@ -10,7 +10,7 @@ order, once each, without recomputing the rest of the sheet.
 That last part is the interesting one. **In a 40,000-cell sheet, editing one
 cell recomputes 39 of them and leaves the other 39,961 alone.**
 
-**[Try it →](https://lattice-sheets.vercel.app)**
+**[Try it →](https://lattice-sheets-kohl.vercel.app)**
 
 ---
 
