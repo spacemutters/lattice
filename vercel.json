@@ -1,0 +1,5 @@
+{
+  "buildCommand": "npm run app:build",
+  "outputDirectory": "dist-app",
+  "framework": null
+}

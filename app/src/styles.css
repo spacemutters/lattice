@@ -1,0 +1,530 @@
+/*
+ * Apple semantic colour tokens, light and dark.
+ *
+ * Values are Apple's published system colours: systemBlue #007AFF / #0A84FF,
+ * secondaryLabel #8E8E93 / #98989D, secondarySystemBackground #F2F2F7 / #1C1C1E,
+ * separator #C6C6C8 / #38383A. Radii follow Apple's web ladder (5, 9, 12, 17)
+ * and spacing sits on an 8px rhythm. Motion is .1s in, .21s out.
+ *
+ * The theme follows the system setting. There is deliberately no theme toggle.
+ */
+
+:root {
+  --blue: #007aff;
+  --blue-pressed: #0062cc;
+  --blue-wash: rgba(0, 122, 255, 0.12);
+
+  --label: #000000;
+  --label-secondary: #8e8e93;
+  --label-tertiary: #c7c7cc;
+
+  --bg: #ffffff;
+  --bg-secondary: #f2f2f7;
+  --bg-tertiary: #ffffff;
+  --bg-elevated: #ffffff;
+
+  --separator: #c6c6c8;
+  --separator-faint: #e5e5ea;
+
+  --green: #34c759;
+  --orange: #ff9500;
+  --red: #ff3b30;
+  --purple: #af52de;
+
+  --precedent: #007aff;
+  --dependent: #ff9500;
+
+  --shadow-window: 0 12px 40px rgba(0, 0, 0, 0.14), 0 2px 8px rgba(0, 0, 0, 0.08);
+  --shadow-popover: 0 8px 28px rgba(0, 0, 0, 0.18);
+
+  --r-sm: 5px;
+  --r-md: 9px;
+  --r-lg: 12px;
+  --r-xl: 17px;
+
+  --in: 0.1s cubic-bezier(0.4, 0, 0.2, 1);
+  --out: 0.21s cubic-bezier(0.4, 0, 0.2, 1);
+
+  --row-h: 25px;
+  --col-w: 104px;
+  --gutter-w: 46px;
+
+  --sans: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Inter', 'Segoe UI', system-ui, sans-serif;
+  --mono: ui-monospace, 'SF Mono', 'JetBrains Mono', Menlo, Consolas, monospace;
+
+  color-scheme: light dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --blue: #0a84ff;
+    --blue-pressed: #0a84ff;
+    --blue-wash: rgba(10, 132, 255, 0.22);
+
+    --label: #ffffff;
+    --label-secondary: #98989d;
+    --label-tertiary: #5a5a5e;
+
+    --bg: #1c1c1e;
+    --bg-secondary: #000000;
+    --bg-tertiary: #2c2c2e;
+    --bg-elevated: #2c2c2e;
+
+    --separator: #38383a;
+    --separator-faint: #2c2c2e;
+
+    --green: #30d158;
+    --orange: #ff9f0a;
+    --red: #ff453a;
+    --purple: #bf5af2;
+
+    --precedent: #0a84ff;
+    --dependent: #ff9f0a;
+
+    --shadow-window: 0 12px 40px rgba(0, 0, 0, 0.5), 0 2px 8px rgba(0, 0, 0, 0.3);
+    --shadow-popover: 0 8px 28px rgba(0, 0, 0, 0.6);
+  }
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+}
+
+body {
+  background: var(--bg-secondary);
+  color: var(--label);
+  font-family: var(--sans);
+  font-size: 13px;
+  -webkit-font-smoothing: antialiased;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+:focus-visible {
+  outline: 4px solid var(--blue-wash);
+  outline-offset: 1px;
+  border-radius: var(--r-sm);
+}
+
+/* ---------------- window ---------------- */
+
+.window {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: var(--bg);
+}
+
+/* ---------------- toolbar ---------------- */
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  min-height: 52px;
+  background: color-mix(in srgb, var(--bg) 72%, transparent);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  border-bottom: 1px solid var(--separator);
+  flex-wrap: wrap;
+}
+
+.brand {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-right: 8px;
+}
+
+.brand-mark {
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.brand-sub {
+  font-size: 11px;
+  color: var(--label-secondary);
+}
+
+.tool-group {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 2px;
+  background: var(--bg-secondary);
+  border-radius: var(--r-md);
+}
+
+.tool {
+  height: 28px;
+  min-width: 28px;
+  padding: 0 9px;
+  border-radius: 7px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--label);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  transition: background var(--in), color var(--in);
+  white-space: nowrap;
+}
+
+.tool:hover { background: color-mix(in srgb, var(--label) 8%, transparent); }
+.tool:active { transform: scale(0.97); }
+.tool[aria-pressed='true'] { background: var(--blue); color: #fff; }
+.tool[disabled] { opacity: 0.35; cursor: default; }
+.tool[disabled]:hover { background: none; }
+
+.tool-b { font-weight: 700; }
+.tool-i { font-style: italic; }
+
+.spacer { flex: 1 1 auto; }
+
+.stat {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--label-secondary);
+  display: flex;
+  gap: 14px;
+  white-space: nowrap;
+}
+.stat b { color: var(--label); font-weight: 500; }
+
+/* ---------------- formula bar ---------------- */
+
+.formula-bar {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  border-bottom: 1px solid var(--separator);
+  background: var(--bg);
+  position: relative;
+}
+
+.addr {
+  width: var(--gutter-w);
+  min-width: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--label-secondary);
+  border-right: 1px solid var(--separator);
+  padding: 7px 10px;
+}
+
+.fx {
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  color: var(--label-secondary);
+  font-style: italic;
+  font-family: var(--mono);
+  font-size: 12px;
+  border-right: 1px solid var(--separator-faint);
+}
+
+.formula-input {
+  flex: 1;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: var(--label);
+  font-family: var(--mono);
+  font-size: 12.5px;
+  padding: 8px 12px;
+  min-width: 0;
+}
+
+/* autocomplete */
+
+.ac {
+  position: absolute;
+  top: 100%;
+  left: 140px;
+  z-index: 40;
+  min-width: 320px;
+  max-height: 264px;
+  overflow-y: auto;
+  background: var(--bg-elevated);
+  border: 1px solid var(--separator);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-popover);
+  padding: 5px;
+  animation: pop var(--out);
+}
+
+@keyframes pop {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: none; }
+}
+
+.ac-item {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 6px 10px;
+  border-radius: 7px;
+  transition: background var(--in);
+}
+.ac-item[data-active='true'] { background: var(--blue); color: #fff; }
+.ac-item[data-active='true'] .ac-desc { color: rgba(255, 255, 255, 0.82); }
+.ac-name { font-family: var(--mono); font-size: 12px; font-weight: 500; }
+.ac-desc { font-size: 11px; color: var(--label-secondary); margin-top: 1px; }
+
+/* ---------------- grid ---------------- */
+
+.grid-wrap {
+  flex: 1;
+  position: relative;
+  overflow: auto;
+  background: var(--bg);
+  contain: strict;
+}
+
+.canvas {
+  position: relative;
+}
+
+.cell,
+.head,
+.gutter {
+  position: absolute;
+  height: var(--row-h);
+  display: flex;
+  align-items: center;
+  font-size: 12.5px;
+  padding: 0 7px;
+  border-right: 1px solid var(--separator-faint);
+  border-bottom: 1px solid var(--separator-faint);
+  white-space: nowrap;
+  overflow: hidden;
+  contain: strict;
+}
+
+.cell { background: var(--bg); }
+.cell[data-num='true'] { justify-content: flex-end; font-variant-numeric: tabular-nums; }
+.cell[data-align='left'] { justify-content: flex-start; }
+.cell[data-align='center'] { justify-content: center; }
+.cell[data-align='right'] { justify-content: flex-end; }
+.cell[data-bold='true'] { font-weight: 600; }
+.cell[data-italic='true'] { font-style: italic; }
+.cell[data-err='true'] { color: var(--red); font-family: var(--mono); font-size: 11.5px; }
+
+.head,
+.gutter {
+  background: var(--bg-secondary);
+  color: var(--label-secondary);
+  font-size: 11px;
+  font-weight: 500;
+  justify-content: center;
+  z-index: 2;
+  user-select: none;
+}
+
+/* Headers stay absolutely positioned and are translated by the scroll offset
+   each frame. `position: sticky` would put them back into normal flow, where
+   they stack instead of sitting in the header row. */
+.head { top: 0; }
+.gutter { left: 0; }
+
+.head[data-sel='true'],
+.gutter[data-sel='true'] {
+  background: var(--blue);
+  color: #fff;
+}
+
+.corner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 3;
+  background: var(--bg-secondary);
+  border-right: 1px solid var(--separator);
+  border-bottom: 1px solid var(--separator);
+  height: var(--row-h);
+}
+
+/* selection */
+
+.cell[data-in-range='true'] { background: var(--blue-wash); }
+
+.selection {
+  position: absolute;
+  border: 2px solid var(--blue);
+  border-radius: 2px;
+  pointer-events: none;
+  z-index: 5;
+  transition: top var(--in), left var(--in), width var(--in), height var(--in);
+}
+
+.handle {
+  position: absolute;
+  right: -4px;
+  bottom: -4px;
+  width: 7px;
+  height: 7px;
+  background: var(--blue);
+  border: 1px solid var(--bg);
+  border-radius: 1px;
+  pointer-events: auto;
+  cursor: crosshair;
+}
+
+/* dependency inspector highlighting */
+
+.cell[data-dep='precedent'] {
+  background: color-mix(in srgb, var(--precedent) 16%, var(--bg));
+  box-shadow: inset 0 0 0 1.5px var(--precedent);
+}
+.cell[data-dep='dependent'] {
+  background: color-mix(in srgb, var(--dependent) 18%, var(--bg));
+  box-shadow: inset 0 0 0 1.5px var(--dependent);
+}
+
+.editor {
+  position: absolute;
+  z-index: 10;
+  border: 2px solid var(--blue);
+  border-radius: 2px;
+  background: var(--bg);
+  color: var(--label);
+  font-family: var(--mono);
+  font-size: 12.5px;
+  padding: 0 5px;
+  outline: none;
+}
+
+/* ---------------- sheet tabs ---------------- */
+
+.tabs {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 12px;
+  background: var(--bg-secondary);
+  border-top: 1px solid var(--separator);
+  min-height: 38px;
+}
+
+.tab {
+  height: 26px;
+  padding: 0 12px;
+  border-radius: var(--r-md);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--label-secondary);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: background var(--in), color var(--in);
+}
+.tab:hover { background: color-mix(in srgb, var(--label) 7%, transparent); }
+.tab[aria-selected='true'] {
+  background: var(--bg);
+  color: var(--label);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.tab-x {
+  opacity: 0;
+  font-size: 14px;
+  line-height: 1;
+  color: var(--label-secondary);
+  transition: opacity var(--in);
+}
+.tab:hover .tab-x { opacity: 0.7; }
+
+/* ---------------- inspector panel ---------------- */
+
+.body {
+  flex: 1;
+  display: flex;
+  min-height: 0;
+}
+
+.inspector {
+  width: 260px;
+  flex: 0 0 260px;
+  border-left: 1px solid var(--separator);
+  background: var(--bg-secondary);
+  overflow-y: auto;
+  padding: 14px;
+}
+
+.inspector[hidden] { display: none; }
+
+.insp-title {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--label-secondary);
+  margin: 0 0 10px;
+}
+
+.insp-card {
+  background: var(--bg);
+  border-radius: var(--r-lg);
+  padding: 12px;
+  margin-bottom: 12px;
+}
+
+.insp-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 4px 0;
+  font-size: 12px;
+}
+.insp-row span:first-child { color: var(--label-secondary); }
+.insp-row span:last-child { font-family: var(--mono); text-align: right; word-break: break-all; }
+
+.chip-list { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 6px; }
+
+.chip {
+  font-family: var(--mono);
+  font-size: 11px;
+  padding: 3px 7px;
+  border-radius: var(--r-sm);
+  background: var(--bg-secondary);
+  color: var(--label);
+  transition: transform var(--in);
+}
+.chip:hover { transform: translateY(-1px); }
+.chip[data-kind='precedent'] { background: color-mix(in srgb, var(--precedent) 18%, transparent); color: var(--precedent); }
+.chip[data-kind='dependent'] { background: color-mix(in srgb, var(--dependent) 22%, transparent); color: var(--dependent); }
+
+.legend { display: flex; gap: 12px; font-size: 11px; color: var(--label-secondary); margin-top: 2px; }
+.legend i { width: 9px; height: 9px; border-radius: 2px; display: inline-block; margin-right: 5px; }
+
+.empty { font-size: 12px; color: var(--label-secondary); font-style: italic; }
+
+@media (max-width: 820px) {
+  .inspector { display: none; }
+  .brand-sub { display: none; }
+  .stat { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
