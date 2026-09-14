@@ -32,7 +32,7 @@ uses to decide what to recompute, drawn directly on the sheet.*
 |---|---|
 | `src/` | The engine. No dependencies. |
 | `app/` | A spreadsheet application using it. |
-| `tests/` | 89 tests. |
+| `tests/` | 102 tests, including differential and fuzz testing. |
 | `bench/` | The benchmark whose numbers appear below. |
 
 ## The engine
@@ -149,7 +149,7 @@ size of the *change*, not the size of the sheet.
 
 ## Tests
 
-89 tests covering precedence and associativity, error propagation, cycle
+102 tests covering precedence and associativity, error propagation, cycle
 detection and recovery, incremental recalculation (asserting the *number* of
 cells recomputed, not just the result), range normalisation, spreadsheet-
 specific numeric behaviour, and malformed input.
@@ -160,8 +160,30 @@ Every malformed formula is asserted to produce an error value rather than throw:
 =1+    =(1    =SUM(    =*2    =1++    =A1:    ="unclosed
 ```
 
+### Differential testing
+
+The headline claim — that recomputing only the affected cells gives the same
+answer as recomputing everything — is exactly the kind of claim that holds for
+the cases you thought of and breaks on the ones you did not. So it is checked
+against randomly generated sheets rather than fixtures:
+
+1. Generate a sheet of random formulas, acyclic by construction.
+2. Apply a random edit to the live sheet.
+3. Rebuild a second sheet from scratch with the same inputs.
+4. Compare every cell.
+
+That runs over eight seeds with 25 edits each, so **200 independent
+comparisons** per test run. Alongside it, roughly **9,000 fuzz inputs** —
+generated formulas and pure character soup — assert that the engine returns an
+error value or raises a `ParseError`, and never throws anything else.
+
+Two graph invariants are checked the same way: every `precedents` edge has a
+matching `dependents` edge, and replacing a formula with a literal drops all of
+its edges. The random source is a seeded PRNG, so any failure reproduces from
+its seed instead of vanishing on the next run.
+
 ```bash
-npm test          # 89 tests
+npm test          # 102 tests
 npm run coverage
 npm run bench
 npm run typecheck
