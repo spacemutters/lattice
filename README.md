@@ -1,5 +1,8 @@
 # Lattice
 
+[![CI](https://github.com/spacemutters/lattice/actions/workflows/ci.yml/badge.svg)](https://github.com/spacemutters/lattice/actions/workflows/ci.yml)
+[![licence: MIT](https://img.shields.io/badge/licence-MIT-blue.svg)](LICENSE)
+
 A spreadsheet formula engine, and a spreadsheet built on top of it.
 
 Type `=B2*C2` into a cell and three things have to happen: the text has to be
