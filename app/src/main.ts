@@ -420,8 +420,22 @@ function refresh(): void {
 
 // ---- start ----
 
+/**
+ * `?cell=D2` opens the sheet with that cell selected, so a link can point at a
+ * particular formula and its dependency graph rather than just the front page.
+ */
+function startingCell(): { col: number; row: number } {
+  const raw = new URLSearchParams(location.search).get('cell');
+  const m = raw ? /^([A-Za-z]{1,3})([1-9][0-9]{0,6})$/.exec(raw.trim()) : null;
+  if (!m) return { col: 0, row: 0 };
+  let col = 0;
+  for (const ch of m[1]!.toUpperCase()) col = col * 26 + (ch.charCodeAt(0) - 64);
+  return { col: col - 1, row: Number(m[2]) - 1 };
+}
+
 renderTabs();
-grid.moveTo(0, 0);
+const start = startingCell();
+grid.moveTo(start.col, start.row);
 refresh();
 grid.el.focus();
 window.addEventListener('resize', () => grid.schedule());

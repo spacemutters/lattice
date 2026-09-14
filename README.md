@@ -12,6 +12,15 @@ cell recomputes 39 of them and leaves the other 39,961 alone.**
 
 **[Try it →](https://lattice-sheets-kohl.vercel.app)**
 
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/dependency-inspector-dark.png">
+  <img alt="Lattice with cell D2 selected. The cells it reads are outlined in blue, the seven cells that read it are outlined in orange, and the inspector reports a downstream total of 13." src="docs/dependency-inspector.png">
+</picture>
+
+*`D2` holds `=B2*C2`. Blue is what it reads, orange is what reads it, and the
+inspector counts 13 cells downstream. That is the dependency graph the engine
+uses to decide what to recompute, drawn directly on the sheet.*
+
 ---
 
 ## What's here
@@ -98,6 +107,8 @@ A real spreadsheet, not a toy embed:
 - Full keyboard navigation: arrows, `Tab`, `Enter`, `Shift` to extend,
   `Ctrl`+arrow to jump, `F2` to edit, type to replace.
 - Function autocomplete in the formula bar.
+- `?cell=D2` opens the sheet on a given cell, so a link can point at one formula
+  and its graph rather than the front page.
 - Follows the system light/dark setting. There is no theme toggle, on purpose.
 
 The interface follows Apple's Human Interface Guidelines — system colours
